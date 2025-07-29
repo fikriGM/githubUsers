@@ -1,5 +1,6 @@
-package com.mf.hcs.gitappusers.data.api
+package com.mf.hcs.gitappusers.network
 
+import com.mf.hcs.gitappusers.data.api.GitHubApiService
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import dagger.Module
