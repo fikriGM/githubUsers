@@ -22,7 +22,7 @@ class GitHubRepositoryImpl @Inject constructor(
     }
 
     override suspend fun getUserDetail(username: String): GitHubUser {
-        TODO("Not yet implemented")
+        return api.getUserDetail(username)
     }
 
     override suspend fun getUsers(): List<GitHubUser> {

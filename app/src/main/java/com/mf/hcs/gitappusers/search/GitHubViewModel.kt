@@ -22,26 +22,49 @@ class GitHubViewModel @Inject constructor(
     private val _error = MutableLiveData<String?>()
     val error: LiveData<String?> = _error
 
+    private val _userDetail = MutableLiveData<GitHubUser>()
+    val userDetail: LiveData<GitHubUser> = _userDetail
+
+    private val _isLoading = MutableLiveData<Boolean>()
+    val isLoading: LiveData<Boolean> get() = _isLoading
+
     fun search(query: String) {
+        _isLoading.value = true
         viewModelScope.launch {
             try {
                 val result = repository.searchUsers(query)
                 _users.value = result.items
             } catch (e: Exception) {
                 _error.value = e.message
+            } finally {
+                _isLoading.value = false
             }
         }
     }
 
     fun getAllUsers() {
+        _isLoading.value = true
         viewModelScope.launch {
             try {
                 val result = repository.getUsers()
-                Log.v("getUsers", "Users: $result")
                 _users.value = result
             } catch (e: Exception) {
                 _error.value = e.message
-                Log.e("getUsers", "Error: ${e.message}", e)
+            } finally {
+                _isLoading.value = false
+            }
+        }
+    }
+
+    fun getUserDetail(username: String) {
+        viewModelScope.launch {
+            try {
+                val response = repository.getUserDetail(username)
+                _userDetail.value = response
+                Log.v("getUsers", "Users details: $response")
+            } catch (e: Exception) {
+                _error.value = e.message
+                Log.e("GitHubViewModel", "Error fetching user detail", e)
             }
         }
     }
